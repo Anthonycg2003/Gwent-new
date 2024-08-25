@@ -1,0 +1,77 @@
+effect
+{
+    Name:"Draw",
+    Action:(context,targets)=>
+    {
+        topCard=context.Deck.Pop();
+        context.Hand.Add(topCard);
+        context.Hand.Shuffle();
+    }    
+}
+effect
+{
+    Name:"Return to deck",
+    Action:(context,targets)=>
+    {
+        for target in targets{
+        owner=target.Owner;
+        deck=context.DeckOfPlayer(owner);
+        deck.Push(target);
+        deck.Shuffle();
+        context.Board.Remove(target);
+        };
+    }    
+}
+
+effect
+{
+    Name:"Damage",
+    Params:{Amount}
+    Action:(context,targets)=>
+    {
+        for target in targets{
+        i=0;
+        while(i++<Amount)
+        {
+            target.Power=target.Power-1;
+        }
+        };
+    }    
+}
+card
+{
+    Name:"Beluga",
+    Type:"Oro",
+    Faction:"Northern Realms",
+    Power:10,
+    Range:["Melee","Ranged"],
+    OnActivation
+    {
+        Effect:
+        {
+            Name:"Damage",
+            Amount:5,
+        }
+        Selector:
+        {
+            Source:"board",
+            Single:false,
+            Predicate:(unit)=>unit.Faction=="Northern"@@"Realms",
+        }
+        PostAction:
+        {
+            Type:"Return to deck",
+            Selector:
+            {
+                Source:"parent",
+                Single:false,
+                Predicate:(unit)=>unit.Power<1,
+            } 
+        }
+        {
+            Effect:"Draw",
+        }
+    }
+}
+
+

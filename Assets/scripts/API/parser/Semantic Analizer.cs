@@ -461,9 +461,13 @@ public class SemanticAnalizer
 		{
 			Analizer(effect);
 		}
-		foreach (Card card in program.Cards.Values)
+		foreach (List<Card> cards in program.Cards.Values)
 		{
-			Analizer(card);
+			foreach(Card card in cards)
+			{
+				Analizer(card);
+			}
+			
 		}
 	}
 	public void Visit_DeclarationExpression(ExpressionStmt declaration)
@@ -609,16 +613,14 @@ public class SemanticAnalizer
 	{
 		Analizer(ElementalProgram);
 	}
-	public void Print_errors()
-	{
-		if (errors.Count == 0)
-		{
-			return;
-		}
-		foreach (CompilingError error in errors)
-		{
-			Console.WriteLine(error.Code + "=> " + error.Argument + " at line " + error.location.line + " and column " + error.location.column);
-		}
-	}
+	public List<string> Get_errors()
+    {
+        List<string> Errors=new List<string>();
+        foreach (CompilingError error in errors)
+        {
+            Errors.Add(error.Code + "=> " + error.Argument + " at line " + error.location.line + " and column " + error.location.column);
+        }
+        return Errors;
+    }
 	#endregion
 }

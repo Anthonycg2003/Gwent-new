@@ -18,16 +18,27 @@ public class GameControler : MonoBehaviour
     [SerializeField]TMP_Text errorsText;
     [SerializeField]GameObject errorsDisplay;
     [SerializeField]GameObject CompletedDisplay;
+    [SerializeField]GameObject DataCards;
     readonly string path="C:/Users/John/Desktop/programacion/unity prueba/Gwent nuevo/Assets/Source/source.txt";
     string text;
+    bool IsReady;
     void Start()
     {
         text=File.ReadAllText(path);
+        IsReady=false;
     }
     public void ReadText()
     {
         DisplayCompile.SetActive(true);
         Compile();
+    }
+    public void SelectDecks()
+    {
+        if(IsReady)
+        {
+            DontDestroyOnLoad(DataCards);
+            SceneManager.LoadScene(1);
+        }
     }
     void ShowErrors(List<string>errors)
     {
@@ -61,7 +72,7 @@ public class GameControler : MonoBehaviour
             ElementalProgram program=Parser.Parse();
             if(Parser.errors.Count!=0)
             {
-                ShowErrors(lexer.Get_errors());
+                ShowErrors(Parser.Get_errors());
             }
             else
             {
@@ -69,11 +80,13 @@ public class GameControler : MonoBehaviour
                 semanticAnalizer.Semantic_Analizer();
                 if(semanticAnalizer.errors.Count!=0)
                 {
-                    ShowErrors(lexer.Get_errors()); 
+                    ShowErrors(semanticAnalizer.Get_errors()); 
                 }
                 else
                 {
                     CompletedDisplay.SetActive(true);
+                    IsReady=true;
+                    DataCards.GetComponent<DataCards>().elementalProgram=program;
                 }
             }
         }

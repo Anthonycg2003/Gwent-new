@@ -19,10 +19,7 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
         Define("context",new Context_class());
         Define("player",Player.player);
         Define("opponent",Player.opponent);
-        foreach(Card card in elementalProgram.Cards.Values)
-        {
-            Context_class.DeckOfPlayer.AddCard(card);
-        }
+        
     }
     #region Expressions
     public object Visit_Atom(Atom expression)
@@ -231,18 +228,14 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
             Execute(stmt);
         }
     }
-    public void Interpret()
+    public void Interpret(Card card)
     {
-        foreach (Card card in Program.Cards.Values)
+        if (card.Effects != null)
         {
-            if (card.Effects != null)
+            foreach(CallEffect effect in card.Effects)
             {
-                foreach(CallEffect effect in card.Effects)
-                {
-                    Execute(effect);
-                }
+                Execute(effect);
             }
-
         }
     }
     public void Print_errors()

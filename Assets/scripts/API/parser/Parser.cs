@@ -109,12 +109,14 @@ class Parser
         errors.Add(new CompilingError(peek().Location, ErrorCode.Expected, message));
         advance();
     }
-    public void Print_errors()
+    public List<string> Get_errors()
     {
+        List<string> Errors=new List<string>();
         foreach (CompilingError error in errors)
         {
-            Console.WriteLine(error.Code + "=> " + error.Argument + " at line " + error.location.line + " and column " + error.location.column);
+            Errors.Add(error.Code + "=> " + error.Argument + " at line " + error.location.line + " and column " + error.location.column);
         }
+        return Errors;
     }
     #endregion
     public ElementalProgram Parse()
@@ -125,7 +127,15 @@ class Parser
             if (match(TokenType.CARD))
             {
                 Card card = ParseCard();
-                program.Cards[card.Name] = card;
+                if(program.Cards.ContainsKey(card.Faction))
+                {
+                    program.Cards[card.Faction].Add(card);
+                }
+                else
+                {
+                    program.Cards[card.Faction]=new List<Card>();
+                    program.Cards[card.Faction].Add(card);
+                }
             }
             else if (match(TokenType.EFFECT))
             {

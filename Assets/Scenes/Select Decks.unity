@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 353861786}
   - component: {fileID: 353861785}
   m_Layer: 5
-  m_Name: Select Decks
+  m_Name: text Select Decks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 444262144}
   m_Layer: 0
   m_Name: Controler
-  m_TagString: Untagged
+  m_TagString: Controler
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -458,6 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FactionPrefab: {fileID: 8635592861282334769, guid: 4039bf4d9da2ce9409d3eef861fb4f81, type: 3}
+  ScrollCardPrefab: {fileID: 1848827490480004465, guid: 708d83bfaf4caf84bb6230c19cb39941, type: 3}
   ScrollFactionsPlayer: {fileID: 206820978}
   ScrollFactionsOpponent: {fileID: 2112400842}
 --- !u!4 &444262145
@@ -688,7 +689,7 @@ GameObject:
   - component: {fileID: 757722632}
   - component: {fileID: 757722631}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: div
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -764,8 +765,8 @@ GameObject:
   - component: {fileID: 781326394}
   - component: {fileID: 781326393}
   m_Layer: 5
-  m_Name: Scroll View
-  m_TagString: Untagged
+  m_Name: Scroll View opponent
+  m_TagString: Opponent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -982,7 +983,7 @@ GameObject:
   - component: {fileID: 1020018913}
   - component: {fileID: 1020018912}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1066,7 +1067,7 @@ GameObject:
   - component: {fileID: 1089602932}
   m_Layer: 5
   m_Name: Scroll View player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1390,7 +1391,7 @@ GameObject:
   - component: {fileID: 1462386352}
   - component: {fileID: 1462386351}
   m_Layer: 5
-  m_Name: cards
+  m_Name: cards image right up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1501,7 +1502,7 @@ GameObject:
   - component: {fileID: 1584907478}
   - component: {fileID: 1584907477}
   m_Layer: 5
-  m_Name: Player
+  m_Name: text Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1635,7 +1636,7 @@ GameObject:
   - component: {fileID: 1620720474}
   - component: {fileID: 1620720473}
   m_Layer: 5
-  m_Name: Opponent
+  m_Name: text Opponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

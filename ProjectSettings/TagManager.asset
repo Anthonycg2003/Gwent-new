@@ -7,6 +7,8 @@ TagManager:
   - Compiling Message
   - Porcent
   - Data
+  - Opponent
+  - Controler
   layers:
   - Default
   - TransparentFX

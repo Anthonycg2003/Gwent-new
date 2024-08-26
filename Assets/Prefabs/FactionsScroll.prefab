@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 8249384327204879459}
   - component: {fileID: 97450861530247031}
   - component: {fileID: 9177798588177512220}
+  - component: {fileID: 2804848601216328336}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -388,7 +389,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 97450861530247031}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: SelectDecksControler, Assembly-CSharp
+        m_MethodName: SelectFaction
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2804848601216328336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7327270189049865980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd4bf71d979b7047938fe6101b0af16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Faction: 
 --- !u!1 &8635592861282334769
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,10 +449,10 @@ RectTransform:
   - {fileID: 1195418062447668117}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160, y: -35}
-  m_SizeDelta: {x: 320, y: 70}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7325316296696847528
 CanvasRenderer:

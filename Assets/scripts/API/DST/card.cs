@@ -18,20 +18,7 @@ public class Card:Stmt,GwentClass
         };
         Metods=new Dictionary<string, Funtion>();
     }
-    public Card(CodeLocation location):base(location)
-    {
-        Name="";
-        Effects=null;
-        Power=0;
-        Ranges=null;
-        Faction="";
-        Type=new Token(TokenType.CARD,"",new CodeLocation());
-        Properties=new Dictionary<string, object?>
-        {
-            {"Name",Name},{"Faction",Faction},{"Power",Power},{"Owner",Player.none}
-        };
-        Metods=new Dictionary<string, Funtion>();
-    }
+    
     public DataType dataType{get{return DataType.Card;}}
     public Dictionary<string,Funtion> Metods{get;set;}
     public Dictionary<string,object?> Properties{get;set;}

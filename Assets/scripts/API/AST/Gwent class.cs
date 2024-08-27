@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
+using UnityEngine;
 public interface Funtion
 {
     object? Call(object target,List<object>arguments);
@@ -30,7 +31,7 @@ public class Push : Funtion
 {
     public object? Call(object target,List<object> arguments)
     {
-        Card card=(Card)arguments[0];
+        GameCard card=(GameCard)arguments[0];
         ((PackOfCards)target).Push(card);
         return null;
     }
@@ -39,7 +40,7 @@ public class SendBottom : Funtion
 {
     public object? Call(object target,List<object> arguments)
     {
-        Card card=(Card)arguments[0];
+        GameCard card=(GameCard)arguments[0];
         ((PackOfCards)target).SendBottom(card);
         return null;
     }
@@ -56,7 +57,7 @@ public class Remove : Funtion
 {
     public object? Call(object target,List<object> arguments)
     {
-        Card card=(Card)arguments[0];
+        GameCard card=(GameCard)arguments[0];
         ((PackOfCards)target).Remove(card);
         return null;
     }
@@ -73,7 +74,7 @@ public class Add : Funtion
 {
     public object? Call(object target,List<object> arguments)
     {
-        Card card=(Card)arguments[0];
+        GameCard card=(GameCard)arguments[0];
         ((PackOfCards)target).AddCard(card);
         return null;
     }
@@ -132,6 +133,10 @@ public class Context_class : GwentClass
     public static PackOfCards HandOfOpponent = new PackOfCards();
     public static PackOfCards DeckOfPlayer = new PackOfCards();
     public static PackOfCards DeckOfOpponent = new PackOfCards();
+    public static PackOfCards FieldOfPlayer = new PackOfCards();
+    public static PackOfCards FieldOfOpponent = new PackOfCards();
+    public static PackOfCards GraveyardOfPlayer = new PackOfCards();
+    public static PackOfCards GraveyardOfOpponent = new PackOfCards();
     public Dictionary<string, Funtion> Metods { get; set; }
     public Dictionary<string, object?> Properties { get; set; }
     public static PackOfCards HandOf(Player player)
@@ -183,12 +188,12 @@ public class PackOfCards : GwentClass, IEnumerable
             ,{"Shuffle",new Shuffle()},{"Add",new Add()},
         };
         Selector selector = callEffect.Selector;
-        List<Card> source=new List<Card>();
+        List<GameCard> source=new List<GameCard>();
         string variable_name="";
         switch (selector.Source)
         {
             case SourceType.board:
-                foreach (Card card in Context_class.Board.cards)
+                foreach (GameCard card in Context_class.Board.cards)
                 {
                     source.Add(card);
                 }
@@ -206,9 +211,9 @@ public class PackOfCards : GwentClass, IEnumerable
                 break;
             case ParamsPredicate.unit:
                 variable_name="unit";
-                foreach(Card card in source)
+                foreach(GameCard card in source)
                 {
-                    if(card.Type.Value!="\"Oro\""&&card.Type.Value!="\"Plata\"")
+                    if(card.Card.Type.Value!="\"Oro\""&&card.Card.Type.Value!="\"Plata\"")
                     {
                         source.Remove(card);
                     }
@@ -216,9 +221,9 @@ public class PackOfCards : GwentClass, IEnumerable
                 break;
             case ParamsPredicate.boost:
                 variable_name="boost";
-                foreach(Card card in source)
+                foreach(GameCard card in source)
                 {
-                    if(card.Type.Value!="\"Aumento\"")
+                    if(card.Card.Type.Value!="\"Aumento\"")
                     {
                         source.Remove(card);
                     }
@@ -226,53 +231,55 @@ public class PackOfCards : GwentClass, IEnumerable
                 break;
             case ParamsPredicate.weather:
                 variable_name="weather";
-                foreach(Card card in source)
+                foreach(GameCard card in source)
                 {
-                    if(card.Type.Value!="\"Clima\"")
+                    if(card.Card.Type.Value!="\"Clima\"")
                     {
                         source.Remove(card);
                     }
                 }
                 break;
         }
-        foreach(Card card in source)
+        foreach(GameCard card in source)
         {
             interpreter.Define(variable_name,card);
             if((bool)interpreter.Evaluate(selector.predicateStmt.condition))
             {
-                cards.Push(card);
+                cards.Add(card);
             }
         }
     }
-    Stack<Card> cards = new Stack<Card>();
+    public List<GameCard> cards=new List<GameCard>();
     public DataType dataType{get{return DataType.PackOfCards;}}
     public string name { get { return "pack"; } }
     public Dictionary<string, Funtion> Metods { get; set; }
     public Dictionary<string, object?> Properties { get; set; }
-    public void Push(Card card)
+    public void Push(GameCard card)
     {
-        cards.Push(card);
+        cards.Add(card);
     }
-    public void SendBottom(Card card)
+    public void SendBottom(GameCard card)
     {
-        cards.Append(card);
+        cards.Insert(0,card);
     }
-    public Card Pop()
+    public GameCard Pop()
     {
-        return cards.Pop();
+        GameCard temp=cards[cards.Count-1];
+        cards.RemoveAt(cards.Count-1);
+        return temp;
     }
-    public void Remove(Card card)
+    public void Remove(GameCard card)
     {
-        cards.ToList().Remove(card);
+        cards.Remove(card);
     }
     public void Shuffle()
     {
-        Random random = new Random();
+        System.Random random = new System.Random();
         cards.OrderBy(x => random.Next());
     }
-   public  void AddCard(Card card)
+   public  void AddCard(GameCard card)
     {
-        cards.Push(card);
+        cards.Add(card);
     }
 
     public IEnumerator GetEnumerator()

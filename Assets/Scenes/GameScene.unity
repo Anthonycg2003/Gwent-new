@@ -1123,6 +1123,7 @@ GameObject:
   m_Component:
   - component: {fileID: 470658407}
   - component: {fileID: 470658408}
+  - component: {fileID: 470658409}
   m_Layer: 5
   m_Name: PlayerDeck
   m_TagString: Untagged
@@ -1175,6 +1176,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &470658409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470658406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc55af3b420816c4387c0669dd8da882, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Isplayer: 1
 --- !u!1 &524528673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1751,6 +1765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 799457307}
   - component: {fileID: 799457308}
+  - component: {fileID: 799457309}
   m_Layer: 5
   m_Name: player graveyard
   m_TagString: Untagged
@@ -1795,7 +1810,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 5
-  m_Spacing: -101.05
+  m_Spacing: -112.8
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -1803,6 +1818,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &799457309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 799457306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ec7027597023c4a9ed0dda724160fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Isplayer: 1
 --- !u!1 &821928978
 GameObject:
   m_ObjectHideFlags: 0
@@ -2850,8 +2878,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -583.71, y: -361}
-  m_SizeDelta: {x: 143.79, y: 150.8}
+  m_AnchoredPosition: {x: -699.4, y: -205.90999}
+  m_SizeDelta: {x: 240.34, y: 114.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1240860016
 MonoBehaviour:
@@ -3095,8 +3123,8 @@ GameObject:
   - component: {fileID: 1306493626}
   - component: {fileID: 1306493629}
   - component: {fileID: 1306493628}
-  - component: {fileID: 1306493627}
   - component: {fileID: 1306493630}
+  - component: {fileID: 1306493631}
   m_Layer: 5
   m_Name: Coin
   m_TagString: Untagged
@@ -3123,21 +3151,6 @@ RectTransform:
   m_AnchoredPosition: {x: 150.89, y: 0}
   m_SizeDelta: {x: 201.79, y: 178.41}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1306493627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306493625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc88e450a9429b842b81a0fdea5c13d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  front: {fileID: 21300000, guid: 83b3183d47a139e4e83440d0ac2eea7b, type: 3}
-  back: {fileID: 21300000, guid: 4db2fb876cd75ab40aa5ece57713ff82, type: 3}
-  rotation: 0
 --- !u!114 &1306493628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3197,6 +3210,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1306493631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306493625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 851f6d66637bf3246986699c903fd438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  front: {fileID: 21300000, guid: e927ad5e50da411428a456f35906a7ee, type: 3}
+  back: {fileID: 21300000, guid: e0a6e9951295a6543bb1ece0f3a3108c, type: 3}
+  rotation: 0
 --- !u!1 &1415224760
 GameObject:
   m_ObjectHideFlags: 0
@@ -3767,8 +3795,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1499763109}
-  - component: {fileID: 1499763110}
   - component: {fileID: 1499763111}
+  - component: {fileID: 1499763112}
   m_Layer: 5
   m_Name: O hand
   m_TagString: Untagged
@@ -3795,19 +3823,6 @@ RectTransform:
   m_AnchoredPosition: {x: 68.77, y: 627.19}
   m_SizeDelta: {x: 951.54, y: 135.62}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1499763110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499763108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c765b11ec6718a14193791eb587c74f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  contador: 0
 --- !u!114 &1499763111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3834,6 +3849,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1499763112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499763108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1524f5ffea02649add46b699e4d79f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Isplayer: 0
 --- !u!1 &1603890222
 GameObject:
   m_ObjectHideFlags: 0
@@ -4014,8 +4042,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CardPrefab: {fileID: 9217792139836339885, guid: bbf32811aeba82743a4155206c532b0c, type: 3}
-  PlayerDeck: {fileID: 470658407}
-  OpponentDeck: {fileID: 1039869907}
+  DeckOfPlayer: {fileID: 470658406}
+  DeckOfOpponent: {fileID: 1039869906}
+  FieldOfPlayer: {fileID: 651378080}
+  FieldOfOpponent: {fileID: 321583364}
+  HandOfPlayer: {fileID: 1711071806}
+  HandOfOpponent: {fileID: 1499763108}
+  GraveyardOfPlayer: {fileID: 799457306}
+  GraveyardOfOpponent: {fileID: 1876546749}
+  coin: {fileID: 1306493625}
+  IsPlayerTurn: 0
 --- !u!1 &1711071806
 GameObject:
   m_ObjectHideFlags: 0
@@ -4050,8 +4086,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -367.38}
-  m_SizeDelta: {x: 920.09, y: 134.64}
+  m_AnchoredPosition: {x: -33.785, y: -362.8}
+  m_SizeDelta: {x: 1163.7, y: 143.82}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1711071808
 MonoBehaviour:
@@ -4071,7 +4107,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 5
-  m_Spacing: 0
+  m_Spacing: 2
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -4088,11 +4124,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1711071806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4117ee19ec2a6d14399833536958bb68, type: 3}
+  m_Script: {fileID: 11500000, guid: 1a1524f5ffea02649add46b699e4d79f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contador: 0
-  deck_image: {fileID: 0}
+  Isplayer: 1
 --- !u!1 &1714095986
 GameObject:
   m_ObjectHideFlags: 0
@@ -4373,6 +4408,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1876546750}
   - component: {fileID: 1876546751}
+  - component: {fileID: 1876546752}
   m_Layer: 5
   m_Name: O graveyard
   m_TagString: Untagged
@@ -4417,14 +4453,27 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: -101
+  m_Spacing: -112.8
   m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1876546752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876546749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ec7027597023c4a9ed0dda724160fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Isplayer: 0
 --- !u!1 &1919944235
 GameObject:
   m_ObjectHideFlags: 0

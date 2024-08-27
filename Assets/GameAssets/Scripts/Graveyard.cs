@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Policy;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Deck : MonoBehaviour,ZoneInterface
+public class Graveyard : MonoBehaviour,ZoneInterface
 {
-    [SerializeField]bool Isplayer;
+   [SerializeField]bool Isplayer;
     Transform ThisTransform;
     void Start()
     {
@@ -22,25 +19,25 @@ public class Deck : MonoBehaviour,ZoneInterface
         }
         if(Isplayer)
         {
-            Context_class.DeckOfPlayer.cards=gameCards;
+            Context_class.GraveyardOfPlayer.cards=gameCards;
         }
         else
         {
-            Context_class.DeckOfOpponent.cards=gameCards;
+            Context_class.GraveyardOfOpponent.cards=gameCards;
         }
     }
     public void SyncWithList()
     {
         if(Isplayer)
         {
-            foreach(GameCard gameCard in Context_class.DeckOfPlayer.cards)
+            foreach(GameCard gameCard in Context_class.GraveyardOfPlayer.cards)
             {
                 gameCard.gameObject.transform.SetParent(ThisTransform);
             }
         }
         else
         {
-           foreach(GameCard gameCard in Context_class.DeckOfOpponent.cards)
+           foreach(GameCard gameCard in Context_class.GraveyardOfOpponent.cards)
             {
                 gameCard.gameObject.transform.SetParent(ThisTransform);
             }
@@ -48,4 +45,3 @@ public class Deck : MonoBehaviour,ZoneInterface
         
     }
 }
-

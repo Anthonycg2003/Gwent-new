@@ -196,9 +196,9 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
         this.Scope = last.CreateChild();
         PackOfCards pack = (PackOfCards)Scope.GetValue(declaration.ienumerable.Value);
         string identifier=declaration.identifier.Value;
-        foreach(Card card in pack)
+        foreach(GameCard gameCard in pack.cards)
         {
-            Define(identifier,card);
+            Define(identifier,gameCard);
             ExecuteBlock(declaration.body);
         }
         this.Scope = last;

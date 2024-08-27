@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Policy;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Deck : MonoBehaviour,ZoneInterface
+public class Field : MonoBehaviour,ZoneInterface
 {
     [SerializeField]bool Isplayer;
     Transform ThisTransform;
@@ -22,25 +19,25 @@ public class Deck : MonoBehaviour,ZoneInterface
         }
         if(Isplayer)
         {
-            Context_class.DeckOfPlayer.cards=gameCards;
+            Context_class.FieldOfPlayer.cards=gameCards;
         }
         else
         {
-            Context_class.DeckOfOpponent.cards=gameCards;
+            Context_class.FieldOfOpponent.cards=gameCards;
         }
     }
     public void SyncWithList()
     {
         if(Isplayer)
         {
-            foreach(GameCard gameCard in Context_class.DeckOfPlayer.cards)
+            foreach(GameCard gameCard in Context_class.FieldOfPlayer.cards)
             {
                 gameCard.gameObject.transform.SetParent(ThisTransform);
             }
         }
         else
         {
-           foreach(GameCard gameCard in Context_class.DeckOfOpponent.cards)
+           foreach(GameCard gameCard in Context_class.FieldOfOpponent.cards)
             {
                 gameCard.gameObject.transform.SetParent(ThisTransform);
             }
@@ -48,4 +45,3 @@ public class Deck : MonoBehaviour,ZoneInterface
         
     }
 }
-

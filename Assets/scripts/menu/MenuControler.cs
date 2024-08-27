@@ -12,7 +12,7 @@ using System.IO;
 using Unity.VisualScripting;
 using System.Diagnostics;
 
-public class GameControler : MonoBehaviour
+public class MenuControler : MonoBehaviour
 {
     [SerializeField]GameObject DisplayCompile;
     [SerializeField]TMP_Text errorsText;

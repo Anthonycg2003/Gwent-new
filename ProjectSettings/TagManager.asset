@@ -5,10 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Compiling Message
-  - Porcent
   - Data
   - Opponent
   - Controler
+  - Opponent Visualizer
+  - Player Visualizer
+  - Canvas
+  - text Player
+  - text Opponent
   layers:
   - Default
   - TransparentFX

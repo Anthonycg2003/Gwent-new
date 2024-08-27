@@ -10,10 +10,10 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
 {
     public Scope Scope;
     public List<CompilingError> errors;
-    ElementalProgram Program;
+    Dictionary<string,Effect>Effects;
     public Interpreter(ElementalProgram elementalProgram)
     {
-        Program = elementalProgram;
+        Effects=elementalProgram.Effects;
         Scope = new Scope();
         errors = new List<CompilingError>();
         Define("context",new Context_class());
@@ -136,7 +136,7 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
     {
         Scope last = this.Scope;
         this.Scope = last.CreateChild();
-        Effect calleer = Program.Effects[expression.effect_name];
+        Effect calleer = Effects[expression.effect_name];
         foreach (KeyValuePair<Token, Expression> keyValuePair in expression.arguments)
         {
             Define(keyValuePair.Key.Value, Evaluate(keyValuePair.Value));

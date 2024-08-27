@@ -459,8 +459,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FactionPrefab: {fileID: 8635592861282334769, guid: 4039bf4d9da2ce9409d3eef861fb4f81, type: 3}
   ScrollCardPrefab: {fileID: 1848827490480004465, guid: 708d83bfaf4caf84bb6230c19cb39941, type: 3}
-  ScrollFactionsPlayer: {fileID: 206820978}
-  ScrollFactionsOpponent: {fileID: 2112400842}
+  ButtomValidatePrefab: {fileID: 7202783710403618809, guid: 5813ae28b727e854ca40e82944192668, type: 3}
+  ReadyTextPrefab: {fileID: 8431138917146161827, guid: 0fde09a9af5bc1b48b2d64e9cb25f6e1, type: 3}
+  ScrollPlayer: {fileID: 206820978}
+  ScrollOpponent: {fileID: 2112400842}
 --- !u!4 &444262145
 Transform:
   m_ObjectHideFlags: 0
@@ -766,7 +768,7 @@ GameObject:
   - component: {fileID: 781326393}
   m_Layer: 5
   m_Name: Scroll View opponent
-  m_TagString: Opponent
+  m_TagString: Opponent Visualizer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1067,7 +1069,7 @@ GameObject:
   - component: {fileID: 1089602932}
   m_Layer: 5
   m_Name: Scroll View player
-  m_TagString: Player
+  m_TagString: Player Visualizer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1503,7 +1505,7 @@ GameObject:
   - component: {fileID: 1584907477}
   m_Layer: 5
   m_Name: text Player
-  m_TagString: Untagged
+  m_TagString: text Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1637,7 +1639,7 @@ GameObject:
   - component: {fileID: 1620720473}
   m_Layer: 5
   m_Name: text Opponent
-  m_TagString: Untagged
+  m_TagString: text Opponent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

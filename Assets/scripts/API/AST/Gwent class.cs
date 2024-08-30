@@ -161,8 +161,20 @@ public class Context_class : GwentClass
             return DeckOfOpponent;
         }
     }
+    public static void SyncBoard()
+    {
+        Board.cards=new List<GameCard>();
+        foreach(GameCard gameCard in FieldOfPlayer.cards)
+        {
+            Board.cards.Add(gameCard);
+        }
+        foreach(GameCard gameCard in FieldOfOpponent.cards)
+        {
+            Board.cards.Add(gameCard);
+        }
+    }
 }
-public class PackOfCards : GwentClass, IEnumerable
+public class PackOfCards : GwentClass
 {
     public PackOfCards()
     {
@@ -176,8 +188,67 @@ public class PackOfCards : GwentClass, IEnumerable
             ,{"Shuffle",new Shuffle()},{"Add",new Add()},
         };
     }
+    public PackOfCards(CallEffect callEffect,Interpreter interpreter,List<GameCard> source)
+    {
+        Properties = new Dictionary<string, object?>
+        {
+        };
+        Metods = new Dictionary<string, Funtion>
+        {
+            {"Push",new Push()},{"SendBottom",new SendBottom()}
+            ,{"Pop",new Pop()},{"Remove",new Remove()}
+            ,{"Shuffle",new Shuffle()},{"Add",new Add()},
+        };
+        Selector selector = callEffect.Selector;
+        string variable_name="";
+        switch (selector.predicateStmt.paramsPredicate)
+        {
+            case ParamsPredicate.card:
+                variable_name="card";
+                break;
+            case ParamsPredicate.unit:
+                variable_name="unit";
+                foreach(GameCard card in source)
+                {
+                    if(card.Card.Type!=CardType.Oro&&card.Card.Type!=CardType.Plata)
+                    {
+                        source.Remove(card);
+                    }
+                }
+                break;
+            case ParamsPredicate.boost:
+                variable_name="boost";
+                foreach(GameCard card in source)
+                {
+                    if(card.Card.Type!=CardType.Aumento)
+                    {
+                        source.Remove(card);
+                    }
+                }
+                break;
+            case ParamsPredicate.weather:
+                variable_name="weather";
+                foreach(GameCard card in source)
+                {
+                    if(card.Card.Type!=CardType.Clima)
+                    {
+                        source.Remove(card);
+                    }
+                }
+                break;
+        }
+        foreach(GameCard card in source)
+        {
+            interpreter.Define(variable_name,card);
+            if((bool)interpreter.Evaluate(selector.predicateStmt.condition))
+            {
+                cards.Add(card);
+            }
+        }
+    }
     public PackOfCards(CallEffect callEffect,Interpreter interpreter)
     {
+       
         Properties = new Dictionary<string, object?>
         {
         };
@@ -213,7 +284,7 @@ public class PackOfCards : GwentClass, IEnumerable
                 variable_name="unit";
                 foreach(GameCard card in source)
                 {
-                    if(card.Card.Type.Value!="\"Oro\""&&card.Card.Type.Value!="\"Plata\"")
+                    if(card.Card.Type!=CardType.Oro && card.Card.Type!=CardType.Plata)
                     {
                         source.Remove(card);
                     }
@@ -223,7 +294,7 @@ public class PackOfCards : GwentClass, IEnumerable
                 variable_name="boost";
                 foreach(GameCard card in source)
                 {
-                    if(card.Card.Type.Value!="\"Aumento\"")
+                    if(card.Card.Type!=CardType.Aumento)
                     {
                         source.Remove(card);
                     }
@@ -233,7 +304,7 @@ public class PackOfCards : GwentClass, IEnumerable
                 variable_name="weather";
                 foreach(GameCard card in source)
                 {
-                    if(card.Card.Type.Value!="\"Clima\"")
+                    if(card.Card.Type!=CardType.Clima)
                     {
                         source.Remove(card);
                     }
@@ -245,6 +316,7 @@ public class PackOfCards : GwentClass, IEnumerable
             interpreter.Define(variable_name,card);
             if((bool)interpreter.Evaluate(selector.predicateStmt.condition))
             {
+                Debug.Log("add a targets"+card.name);
                 cards.Add(card);
             }
         }
@@ -274,17 +346,18 @@ public class PackOfCards : GwentClass, IEnumerable
     }
     public void Shuffle()
     {
-        System.Random random = new System.Random();
-        cards.OrderBy(x => random.Next());
+        for(int i=0;i<cards.Count;i++)//acc a cada carta del deck
+        {
+            GameCard temp;
+            temp=cards[i];
+            int random=UnityEngine.Random.Range(0,cards.Count);//num aleatorio desde 0 hasta las cartas-1
+            cards[i]=cards[random];//esta carta sera igual a otra aleatoria
+           cards[random]=temp;//y la carta aleatoria sera igual a esta carta
+        }
     }
-   public  void AddCard(GameCard card)
+    public  void AddCard(GameCard card)
     {
         cards.Add(card);
-    }
-
-    public IEnumerator GetEnumerator()
-    {
-        return cards.GetEnumerator();
     }
 }
 public enum Player

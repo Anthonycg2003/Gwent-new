@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 public class Interpreter : IVisitorExpression, IVisitorDeclaration
 {
@@ -134,19 +135,30 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
     }
     public void Visit_CallEffect(CallEffect expression)
     {
-        Scope last = this.Scope;
-        this.Scope = last.CreateChild();
         Effect calleer = Effects[expression.effect_name];
+        Debug.Log("el efecto es "+calleer.Name);
         foreach (KeyValuePair<Token, Expression> keyValuePair in expression.arguments)
         {
             Define(keyValuePair.Key.Value, Evaluate(keyValuePair.Value));
         }
-        Define("targets", new PackOfCards(expression,this));
+        if(expression.Selector.Source==SourceType.parent)
+        {
+            List<GameCard>source=((PackOfCards)Scope.GetValue("targets")).cards;
+            Define("targets",new PackOfCards(expression,this,source));
+        }
+        else
+        {
+            Define("targets", new PackOfCards(expression,this));
+        }
+        List<GameCard> test=((PackOfCards)Scope.GetValue("targets")).cards;
+        foreach(GameCard gameCard in test)
+        {
+            Debug.Log("target "+gameCard.name);
+        }
         foreach (Stmt stmt in calleer.body)
         {
             Execute(stmt);
         }
-        this.Scope = last;
     }
     public object Visit_Variable(Variable expression)
     {
@@ -183,11 +195,10 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
     {
         Scope last = this.Scope;
         this.Scope = last.CreateChild();
-        object value_condition = Evaluate(declaration.condition);
-            while ((bool)value_condition)
-            {
-                ExecuteBlock(declaration.body);
-            }
+        while ((bool)Evaluate(declaration.condition))
+        {
+            ExecuteBlock(declaration.body);
+        }
         this.Scope = last;
     }
     public void Visit_ForDeclaration(ForStmt declaration)

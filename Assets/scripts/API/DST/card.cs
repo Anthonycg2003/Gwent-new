@@ -4,7 +4,7 @@ using System.Data;
 
 public class Card:Stmt,GwentClass
 {
-    public Card(CodeLocation location,string Name,string Faction,Token Type,List<string>? Ranges,int? Power,List<CallEffect>? funtion):base(location)
+    public Card(CodeLocation location,string Name,string Faction,CardType Type,List<Range>? Ranges,int? Power,List<CallEffect>? funtion):base(location)
     {
         this.Name=Name;
         Effects=funtion;
@@ -25,8 +25,8 @@ public class Card:Stmt,GwentClass
     public string name{get{return "card";}}
     public string Name { get; set; }
     public string Faction { get; set; }
-    public Token Type { get; set; }
-    public List<string>? Ranges{get;set;}
+    public CardType Type { get; set; }
+    public List<Range>? Ranges{get;set;}
     public int? Power { get; set; }
     public List<CallEffect>? Effects;
     public override void Accept(IVisitorDeclaration visitor)
@@ -39,25 +39,19 @@ public class Card:Stmt,GwentClass
     }
     public bool CheckPorperties(List<CompilingError> errors)
     {
-            if(this.Type.Value=="\"Plata\""||this.Type.Value=="\"Oro\"")
+            if(Type==CardType.Plata||Type==CardType.Oro)
             {
                 if(this.Power==null||this.Ranges==null)
                 {
-                    errors.Add(new CompilingError(Type.Location, ErrorCode.Invalid,"gold and silver cards should have range and power properties"));
+                    errors.Add(new CompilingError(Location, ErrorCode.Invalid,"gold and silver cards should have range and power properties"));
                     return false;
                 }
                 return true;  
             }
-            else if(this.Type.Value=="\"Lider\""||this.Type.Value=="\"Aumento\""||this.Type.Value=="\"Clima\"")
-            {
-                return true;
-            }
             else
             {
-                errors.Add(new CompilingError(Type.Location, ErrorCode.Invalid, String.Format("{0} Type Does not exists",Type)));
                 return true;
             }
-        
     }
 }
 public class CallEffect:Stmt//llamada a funciones
@@ -85,8 +79,10 @@ public class Selector:Stmt//llamada a funciones
     public bool Single{get;set;}
     public SourceType Source{get;set;}
     public PredicateStmt predicateStmt{get;set;}
-    public Selector(CodeLocation location,bool single,SourceType source,PredicateStmt predicateStmt) : base(location)
+    public Selector? parent;
+    public Selector(CodeLocation location,bool single,SourceType source,PredicateStmt predicateStmt,Selector parent) : base(location)
     {
+        this.parent=parent;
         Single=single;
         Source=source;
         this.predicateStmt=predicateStmt;
@@ -102,4 +98,12 @@ public class Selector:Stmt//llamada a funciones
 public enum SourceType
 {
     board,hand,otherHand,deck,otherDeck,field,otherField,parent
+}
+public enum Range
+{
+    Melee,Range,Siege
+}
+public enum CardType
+{
+    Oro,Plata,Clima,Aumento,Lider
 }

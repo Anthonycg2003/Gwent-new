@@ -8,17 +8,15 @@ using UnityEngine.UI;
 public class Deck : MonoBehaviour,ZoneInterface
 {
     [SerializeField]bool Isplayer;
-    Transform ThisTransform;
     void Start()
     {
-        ThisTransform=gameObject.transform;
     }
     public void OnTransformChildrenChanged()
     {
         List<GameCard> gameCards=new List<GameCard>();
-        for(int i=0;i<ThisTransform.childCount;i++)
+        for(int i=0;i<gameObject.transform.childCount;i++)
         {
-            gameCards.Add(ThisTransform.GetChild(i).GetComponent<GameCard>());
+            gameCards.Add(gameObject.transform.GetChild(i).GetComponent<GameCard>());
         }
         if(Isplayer)
         {
@@ -35,17 +33,25 @@ public class Deck : MonoBehaviour,ZoneInterface
         {
             foreach(GameCard gameCard in Context_class.DeckOfPlayer.cards)
             {
-                gameCard.gameObject.transform.SetParent(ThisTransform);
+                gameCard.gameObject.transform.SetParent(gameObject.transform);
             }
         }
         else
         {
            foreach(GameCard gameCard in Context_class.DeckOfOpponent.cards)
             {
-                gameCard.gameObject.transform.SetParent(ThisTransform);
+                gameCard.gameObject.transform.SetParent(gameObject.transform);
             }
         }
         
+    }
+
+    public void UpdateCardsProperties()
+    {
+        for(int i=0;i<gameObject.transform.childCount;i++)
+        {
+            gameObject.transform.GetChild(i).GetComponent<GameCard>().RefreshProperties();
+        }
     }
 }
 

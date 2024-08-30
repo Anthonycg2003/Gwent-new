@@ -9,7 +9,6 @@ public class SemanticAnalizer
 	public List<CompilingError> errors;
 	ElementalProgram ElementalProgram;
 	Stack<Dictionary<string,DataType>> DataScope=new Stack<Dictionary<string, DataType>>();
-	static readonly string[] ranges = { "\"Melee\"", "\"Ranged\"", "\"Siege\"" };
 	static readonly Dictionary<DataType,Dictionary<string,DataType>> DatatypeProperties=new Dictionary<DataType,Dictionary<string,DataType>>
 	{
 		{DataType.Card,new Dictionary<string,DataType>()
@@ -417,19 +416,15 @@ public class SemanticAnalizer
 			List<string>contexts=new List<string>();
 			if (expression.Ranges != null)
 			{
-				foreach (string Range in expression.Ranges)
+				foreach (Range Range in expression.Ranges)
 				{
-					if (!ranges.Contains(Range))
-					{
-						errors.Add(new CompilingError(expression.Location, ErrorCode.Invalid, String.Format("{0} Range Does not exists", Range)));
-					}
-					if (contexts.Contains(Range))
+					if (contexts.Contains(Range.ToString()))
 					{
 						errors.Add(new CompilingError(expression.Location, ErrorCode.Invalid, String.Format("{0} Range already in use", Range)));
 					}
 					else
 					{
-						contexts.Add(Range);
+						contexts.Add(Range.ToString());
 					}
 				}
 			}

@@ -5,43 +5,67 @@ using UnityEngine;
 public class Field : MonoBehaviour,ZoneInterface
 {
     [SerializeField]bool Isplayer;
-    Transform ThisTransform;
+    GameObject[]Zones;
+    static GameControler gameControler;
     void Start()
     {
-        ThisTransform=gameObject.transform;
+        GameObject MeleeZone;
+        GameObject RangeZone;
+        GameObject SiegeZone;
+        gameControler=GameObject.FindWithTag("Controler").GetComponent<GameControler>();
+        if(Isplayer)
+        {
+            MeleeZone=gameControler.PlayerMeleeZone;
+            RangeZone=gameControler.PlayerRangeZone;
+            SiegeZone=gameControler.PlayerSiegeZone;
+        }
+        else
+        {
+            MeleeZone=gameControler.OpponentMeleeZone;
+            RangeZone=gameControler.OpponentRangeZone;
+            SiegeZone=gameControler.OpponentSiegeZone;
+        }
+        Zones=new GameObject[3]{MeleeZone,RangeZone,SiegeZone};
     }
-    public void OnTransformChildrenChanged()
+    public void UpdateContext()
     {
         List<GameCard> gameCards=new List<GameCard>();
-        for(int i=0;i<ThisTransform.childCount;i++)
+        foreach(GameObject zone in Zones)
         {
-            gameCards.Add(ThisTransform.GetChild(i).GetComponent<GameCard>());
+            for(int i=0;i<zone.transform.childCount;i++)
+            {
+                gameCards.Add(zone.transform.GetChild(i).GetComponent<GameCard>());
+            }
         }
         if(Isplayer)
         {
             Context_class.FieldOfPlayer.cards=gameCards;
+            
         }
         else
         {
             Context_class.FieldOfOpponent.cards=gameCards;
+           
         }
+       Context_class.SyncBoard();
     }
     public void SyncWithList()
     {
-        if(Isplayer)
+        
+    }
+    public void UpdateCardsProperties()
+    {
+        foreach(GameObject zone in Zones)
         {
-            foreach(GameCard gameCard in Context_class.FieldOfPlayer.cards)
+            for(int i=0;i<zone.transform.childCount;i++)
             {
-                gameCard.gameObject.transform.SetParent(ThisTransform);
+                zone.transform.GetChild(i).GetComponent<GameCard>().RefreshProperties();
             }
         }
-        else
-        {
-           foreach(GameCard gameCard in Context_class.FieldOfOpponent.cards)
-            {
-                gameCard.gameObject.transform.SetParent(ThisTransform);
-            }
-        }
+    }
+
+    public void OnTransformChildrenChanged()
+    {
         
     }
 }

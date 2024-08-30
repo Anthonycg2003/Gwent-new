@@ -6,4 +6,5 @@ public interface ZoneInterface
 {
     void OnTransformChildrenChanged();
     void SyncWithList();
+    void UpdateCardsProperties();
 }

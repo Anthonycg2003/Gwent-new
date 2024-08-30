@@ -42,4 +42,11 @@ public class Hand : MonoBehaviour,ZoneInterface
         }
         
     }
+    public void UpdateCardsProperties()
+    {
+        for(int i=0;i<gameObject.transform.childCount;i++)
+        {
+            gameObject.transform.GetChild(i).GetComponent<GameCard>().RefreshProperties();
+        }
+    }
 }

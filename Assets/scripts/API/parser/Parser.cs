@@ -154,8 +154,8 @@ class Parser
         CodeLocation location = peek().Location;
         string? name = null;
         string? faction = null;
-        Token? type = null;
-        List<string>? ranges = null;
+        CardType? type = null;
+        List<Range>? ranges = null;
         int? power = null;
         List<CallEffect>? effects = null;
         Consume(TokenType.LEFT_KEY, "{ expected");
@@ -189,8 +189,43 @@ class Parser
                         }
                         advance();
                         Consume(TokenType.COLON, ": expected");
-                        Consume(TokenType.STRING, "valid type expected");
-                        type = previus();
+                        Token type_name=Consume(TokenType.STRING, "valid type expected");
+                        if(type_name.Type==TokenType.STRING)
+                        {
+                            switch(type_name.Value)
+                            {
+                                case "Oro":
+                                {
+                                    type=CardType.Oro;
+                                    break;
+                                }
+                                case "Plata":
+                                {
+                                    type=CardType.Plata;
+                                    break;
+                                }
+                                case "Lider":
+                                {
+                                    type=CardType.Lider;
+                                    break;
+                                }
+                                case "Clima":
+                                {
+                                    type=CardType.Clima;
+                                    break;
+                                }
+                                case "Aumento":
+                                {
+                                    type=CardType.Aumento;
+                                    break;
+                                }
+                                default:
+                                {
+                                    errors.Add(new CompilingError(type_name.Location, ErrorCode.Invalid, String.Format("{0} Type Does not exists",type_name.Value)));
+                                    break;
+                                }
+                            }
+                        }
                         Consume(TokenType.COMMA, ", expected");
                         break;
                     }
@@ -209,15 +244,41 @@ class Parser
                         {
                             errors.Add(new CompilingError(peek().Location, ErrorCode.Invalid, "Range property has been declared"));
                         }
-                        ranges = new List<string>();
+                        ranges = new List<Range>();
                         advance();
                         Consume(TokenType.COLON, ": expected");
                         Consume(TokenType.LEFT_BRACE, "[ expected");
                         bool into_range = true;
                         while (into_range)
                         {
-                            Consume(TokenType.STRING, "valid range expected");
-                            ranges.Add(previus().Value);
+                            Token Range=Consume(TokenType.STRING, "valid range expected");
+                            if(Range.Type==TokenType.STRING)
+                            {
+                                switch(Range.Value)
+                                {
+                                    case "Melee":
+                                    {
+                                        ranges.Add(global::Range.Melee);
+                                        break;
+                                    }
+                                    case "Ranged":
+                                    {
+                                        ranges.Add(global::Range.Range);
+                                        break;
+                                    }
+                                    case "Siege":
+                                    {
+                                        ranges.Add(global::Range.Siege);
+                                        break;
+                                    }
+                                    default:
+                                    {
+                                        type=CardType.Lider;
+                                        errors.Add(new CompilingError(Range.Location, ErrorCode.Invalid, String.Format("{0} Range Does not exists", Range)));
+                                        break;
+                                    }
+                                }
+                            }
                             if (!Check(TokenType.COMMA))
                             {
                                 into_range = false;
@@ -283,10 +344,10 @@ class Parser
         if (type == null)
         {
             errors.Add(new CompilingError(location, ErrorCode.Expected, "card type expected"));
-            type = new Token(TokenType.UNKNOW, "", new CodeLocation());
+            type = CardType.Lider;
         }
         #endregion
-        return new Card(location, name, faction, type, ranges, power, effects);
+        return new Card(location, name, faction, (CardType)type, ranges, power, effects);
     }
     #region CardProperties
     string ParseFaction()
@@ -417,25 +478,25 @@ class Parser
                         Token String = advance();
                         switch (String.Value)
                         {
-                            case "\"board\"":
+                            case "board":
                                 source = SourceType.board;
                                 break;
-                            case "\"hand\"":
+                            case "hand":
                                 source = SourceType.hand;
                                 break;
-                            case "\"otherHand\"":
+                            case "otherHand":
                                 source = SourceType.otherHand;
                                 break;
-                            case "\"deck\"":
+                            case "deck":
                                 source = SourceType.deck;
                                 break;
-                            case "\"otherDeck\"":
+                            case "otherDeck":
                                 source = SourceType.otherDeck;
                                 break;
-                            case "\"field\"":
+                            case "field":
                                 source = SourceType.field;
                                 break;
-                            case "\"otherField\"":
+                            case "otherField":
                                 source = SourceType.otherField;
                                 break;
                             default:
@@ -479,7 +540,7 @@ class Parser
             predicateStmt=new PredicateStmt(Keyword_Selector.Location,new Atom("",peek().Location),ParamsPredicate.card);
             errors.Add(new CompilingError(Keyword_Selector.Location, ErrorCode.Expected, "predicate in selector expected"));
         }
-        return new Selector(Keyword_Selector.Location, (bool)single, (SourceType)source, predicateStmt);
+        return new Selector(Keyword_Selector.Location, (bool)single, (SourceType)source, predicateStmt,null);
     }
     CallEffect ParsePostAction(Selector father)
     {
@@ -504,11 +565,11 @@ class Parser
         */
         if(peek().Type==TokenType.Selector)
         {
-            return new CallEffect(codeLocation, arguments, effect_name.Value, ParsePostSelector());
+            return new CallEffect(codeLocation, arguments, effect_name.Value, ParsePostSelector(father));
         }
         return new CallEffect(codeLocation, arguments, effect_name.Value, father);
     }
-    Selector ParsePostSelector()
+    Selector ParsePostSelector(Selector parent)
     {
         bool? single = null;
         SourceType? source = null;
@@ -555,28 +616,28 @@ class Parser
                         Token String = advance();
                         switch (String.Value)
                         {
-                            case "\"board\"":
+                            case "board":
                                 source = SourceType.board;
                                 break;
-                            case "\"hand\"":
+                            case "hand":
                                 source = SourceType.hand;
                                 break;
-                            case "\"otherHand\"":
+                            case "otherHand":
                                 source = SourceType.otherHand;
                                 break;
-                            case "\"deck\"":
+                            case "deck":
                                 source = SourceType.deck;
                                 break;
-                            case "\"otherDeck\"":
+                            case "otherDeck":
                                 source = SourceType.otherDeck;
                                 break;
-                            case "\"field\"":
+                            case "field":
                                 source = SourceType.field;
                                 break;
-                            case "\"otherField\"":
+                            case "otherField":
                                 source = SourceType.otherField;
                                 break;
-                            case "\"parent\"":
+                            case "parent":
                                 source = SourceType.parent;
                                 break;
                             default:
@@ -621,7 +682,7 @@ class Parser
             predicateStmt=new PredicateStmt(Keyword_Selector.Location,new Atom("",peek().Location),ParamsPredicate.card);
             errors.Add(new CompilingError(Keyword_Selector.Location, ErrorCode.Expected, "predicate in selector expected"));
         }
-        return new Selector(Keyword_Selector.Location, (bool)single, (SourceType)source, predicateStmt);
+        return new Selector(Keyword_Selector.Location, (bool)single, (SourceType)source, predicateStmt,parent);
     }
     PredicateStmt ParsePredicate()
     {

@@ -60,9 +60,9 @@ public class MenuControler : MonoBehaviour
     }
     void Compile()
     {
-        LexicalAnalyzer lexer=new LexicalAnalyzer(text);
+        Lexer lexer=new Lexer(text);
         List<Token>tokens=lexer.GetTokens();
-        if(lexer.Errors.Count!=0)
+        if(lexer.errors.Count!=0)
         {
             ShowErrors(lexer.Get_errors());
         }

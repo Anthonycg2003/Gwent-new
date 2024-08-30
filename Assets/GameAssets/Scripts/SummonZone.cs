@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SummonZone : MonoBehaviour
 {
@@ -9,6 +12,7 @@ public class SummonZone : MonoBehaviour
     GameCard AsociatedCard;
     List<Range> ActivateZones;
     static GameControler gameControler;
+    [SerializeField]Text text_Power;
     void Start()
     {
         IsActive=false;
@@ -27,6 +31,16 @@ public class SummonZone : MonoBehaviour
             gameControler.SummonIn(gameObject.transform,ActivateZones,AsociatedCard);
         }
     }
+    public int RefreshPower()
+    {
+        int power=0;
+        for(int i=0;i<gameObject.transform.childCount;i++)
+        {
+            power+=Convert.ToInt32(gameObject.transform.GetChild(i).GetComponent<GameCard>().Properties["Power"]);
+        }
+        text_Power.text=power.ToString();
+        return power;
+    }
     public void DisableZone()
     {
         IsActive=false;
@@ -36,5 +50,7 @@ public class SummonZone : MonoBehaviour
     public void OnTransformChildrenChanged()
     {
         field.UpdateContext();
+        RefreshPower();
     }
 }
+

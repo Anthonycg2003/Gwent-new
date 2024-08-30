@@ -53,6 +53,15 @@ public class Field : MonoBehaviour,ZoneInterface
     {
         
     }
+    public int GetPower()
+    {
+        int power=0;
+        foreach(GameObject zone in Zones)
+        {
+            power+=zone.GetComponent<SummonZone>().RefreshPower();
+        }
+        return power;
+    }
     public void UpdateCardsProperties()
     {
         foreach(GameObject zone in Zones)
@@ -63,7 +72,16 @@ public class Field : MonoBehaviour,ZoneInterface
             }
         }
     }
-
+    public void SendToGraveyard(Transform Graveyard)
+    {
+        foreach(GameObject zone in Zones)
+        {
+            for(int i=0;i<zone.transform.childCount;i++)
+            {
+                zone.transform.GetChild(0).transform.SetParent(Graveyard);
+            }
+        }
+    }
     public void OnTransformChildrenChanged()
     {
         

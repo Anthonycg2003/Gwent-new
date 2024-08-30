@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameControler : MonoBehaviour
 {
@@ -28,7 +29,8 @@ public class GameControler : MonoBehaviour
     public GameObject OpponentBoostRangeZone;
     public GameObject OpponentBoostSiegeZone;
     public GameObject WeatherZone;
-    [SerializeField] TMP_Text TurnText;
+    [SerializeField] Text TextPlayerPower;
+    [SerializeField] Text TextOpponentPower;
     [SerializeField] GameObject coin;
     ZoneInterface[] Zones;
     public bool IsPlayerTurn;
@@ -49,7 +51,13 @@ public class GameControler : MonoBehaviour
         PlayerWinRounds = 0;
         OpponentWinRounds = 0;
     }
-
+    void RefreshPower()
+    {
+        PlayerPower=FieldOfPlayer.GetComponent<Field>().GetPower();
+        OpponentPower=FieldOfOpponent.GetComponent<Field>().GetPower();
+        TextPlayerPower.text=PlayerPower.ToString();
+        TextOpponentPower.text=OpponentPower.ToString();
+    }
     void Start()
     {
         DataCards dataCards = GameObject.FindWithTag("Data").GetComponent<DataCards>();
@@ -163,7 +171,7 @@ public class GameControler : MonoBehaviour
         }
         void ActivateSummonZones(List<Range> Ranges)
         {
-            Debug.Log("activationg zones");
+            ActionText.Add_Action("Select a zone to summon the card");
             foreach (Range Range in Ranges)
             {
                 switch (Range)
@@ -178,6 +186,7 @@ public class GameControler : MonoBehaviour
                             {
                                 OpponentMeleeZone.GetComponent<SummonZone>().ActiveZone(gameCard, Ranges);
                             }
+                            ActionText.Add_Action("Melee Zone active");
                             continue;
                         }
                     case Range.Range:
@@ -190,6 +199,7 @@ public class GameControler : MonoBehaviour
                             {
                                 OpponentRangeZone.GetComponent<SummonZone>().ActiveZone(gameCard, Ranges);
                             }
+                            ActionText.Add_Action("Range Zone active");
                             continue;
                         }
                     case Range.Siege:
@@ -202,6 +212,7 @@ public class GameControler : MonoBehaviour
                             {
                                 OpponentSiegeZone.GetComponent<SummonZone>().ActiveZone(gameCard, Ranges);
                             }
+                            ActionText.Add_Action("Siege Zone active");
                             continue;
                         }
                 }
@@ -209,6 +220,10 @@ public class GameControler : MonoBehaviour
         }
         void PostSummon()
         {
+            interpreter.Interpret(gameCard.Card);
+            SyncZonesWithList();
+            gameCard.InBattle = true;
+            RefreshPower();
             if (owner == Player.player)
             {
                 if (OpponentPlayActualRound)
@@ -225,9 +240,7 @@ public class GameControler : MonoBehaviour
                     UpdateTurn();
                 }
             }
-            interpreter.Interpret(gameCard.Card);
-            SyncZonesWithList();
-            gameCard.InBattle=true;
+
         }
         void SummonIn(Transform parent)
         {
@@ -235,7 +248,7 @@ public class GameControler : MonoBehaviour
         }
         bool MaySummon()
         {
-            if(gameCard.InBattle)
+            if (gameCard.InBattle)
             {
                 return false;
             }
@@ -255,7 +268,7 @@ public class GameControler : MonoBehaviour
             }
             return false;
         }
-    #endregion
+        #endregion
     }
     public void SummonIn(Transform parent, List<Range> Ranges, GameCard gameCard)
     {
@@ -310,6 +323,10 @@ public class GameControler : MonoBehaviour
         }
         void PostSummon()
         {
+            interpreter.Interpret(gameCard.Card);
+            SyncZonesWithList();
+            RefreshPower();
+            gameCard.InBattle = true;
             if (owner == Player.player)
             {
                 if (OpponentPlayActualRound)
@@ -326,74 +343,34 @@ public class GameControler : MonoBehaviour
                     UpdateTurn();
                 }
             }
-            interpreter.Interpret(gameCard.Card);
-            SyncZonesWithList();
-            gameCard.InBattle=true;
         }
         void SummonIn(Transform parent)
         {
             gameCard.gameObject.transform.SetParent(parent);
         }
     }
-    void DecideRoundWinner()
+    void SendToGraveyardAfterRound()
     {
-        if (PlayerPower > OpponentPower)
-        {
-            PlayerWinRounds++;
-        }
-        else if (OpponentPower > PlayerPower)
-        {
-            OpponentWinRounds++;
-        }
-        else
-        {
-            PlayerWinRounds++;
-            OpponentWinRounds++;
-        }
-    }
-    bool CheckGameWinner(bool IsPlayer)
-    {
-        if (IsPlayer)
-        {
-            if (PlayerWinRounds >= 2)
-            {
-                return true;
-            }
-        }
-        else
-        {
-            if (OpponentWinRounds >= 2)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    void FinishedGame(bool? IsPlayerWinner)
-    {
-
+        FieldOfPlayer.GetComponent<Field>().SendToGraveyard(GraveyardOfPlayer.transform);
+        FieldOfOpponent.GetComponent<Field>().SendToGraveyard(GraveyardOfOpponent.transform);
     }
     void SyncZonesWithList()
     {
-        foreach(ZoneInterface zone in Zones)
+        foreach (ZoneInterface zone in Zones)
         {
             zone.SyncWithList();
             zone.UpdateCardsProperties();
         }
     }
-    bool BothPlayerPased()
-    {
-        return !(PlayerPlayActualRound || OpponentPlayActualRound);
-    }
     public void UpdateTurn()
     {
         if (IsPlayerTurn)
         {
-            TurnText.text = "Player Turn";
+            ActionText.Add_Action("Player Turn");
         }
         else
         {
-            TurnText.text = "Opponent Turn";
+            ActionText.Add_Action("Opponent Turn");
         }
     }
     public void PassTurn()
@@ -402,6 +379,7 @@ public class GameControler : MonoBehaviour
         {
             IsPlayerTurn = false;
             PlayerPlayActualRound = false;
+            ActionText.Add_Action("Player passed actual Round");
             if (BothPlayerPased())
             {
                 PassRound();
@@ -411,10 +389,15 @@ public class GameControler : MonoBehaviour
         {
             IsPlayerTurn = true;
             OpponentPlayActualRound = false;
+            ActionText.Add_Action("Opponent passed actual Round");
             if (BothPlayerPased())
             {
                 PassRound();
             }
+        }
+        bool BothPlayerPased()
+        {
+            return !(PlayerPlayActualRound || OpponentPlayActualRound);
         }
         UpdateTurn();
     }
@@ -438,6 +421,67 @@ public class GameControler : MonoBehaviour
                 FinishedGame(false);
             }
         }
+        SendToGraveyardAfterRound();
+        RefreshRound();
+        RefreshPower();
+        void RefreshRound()
+        {
+            Round=Rounds.Pop();
+        }
+        void FinishedGame(bool? IsPlayerWinner)
+        {
+            ActionText.Add_Action("Finished Game");
+            if (IsPlayerWinner == null)
+            {
+                ActionText.Add_Action("Draw");
+            }
+            else if (IsPlayerWinner == false)
+            {
+                ActionText.Add_Action("Winner: Opponent");
+            }
+            else
+            {
+                ActionText.Add_Action("Winner: Player");
+            }
+        }
+        void DecideRoundWinner()
+        {
+            if (PlayerPower > OpponentPower)
+            {
+                ActionText.Add_Action("Round Winner: Player");
+                PlayerWinRounds++;
+            }
+            else if (OpponentPower > PlayerPower)
+            {
+                ActionText.Add_Action("Round Winner: Opponent");
+                OpponentWinRounds++;
+            }
+            else
+            {
+                ActionText.Add_Action("Round Draw");
+                PlayerWinRounds++;
+                OpponentWinRounds++;
+            }
+        }
+        bool CheckGameWinner(bool IsPlayer)
+        {
+            if (IsPlayer)
+            {
+                if (PlayerWinRounds >= 2)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (OpponentWinRounds >= 2)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
     void Draw(int numberOfCards, bool IsPlayer)
     {

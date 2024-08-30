@@ -13,6 +13,7 @@ TagManager:
   - Canvas
   - text Player
   - text Opponent
+  - ActionText
   layers:
   - Default
   - TransparentFX

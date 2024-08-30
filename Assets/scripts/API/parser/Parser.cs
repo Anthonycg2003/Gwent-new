@@ -329,7 +329,6 @@ class Parser
                     }
             }
         }
-        #region much text
         Consume(TokenType.RIGHT_KEY, "} expected");
         if (name == null)
         {
@@ -346,7 +345,6 @@ class Parser
             errors.Add(new CompilingError(location, ErrorCode.Expected, "card type expected"));
             type = CardType.Lider;
         }
-        #endregion
         return new Card(location, name, faction, (CardType)type, ranges, power, effects);
     }
     #region CardProperties

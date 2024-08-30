@@ -136,7 +136,7 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
     public void Visit_CallEffect(CallEffect expression)
     {
         Effect calleer = Effects[expression.effect_name];
-        Debug.Log("el efecto es "+calleer.Name);
+        ActionText.Add_Action("Executing Action: "+calleer.Name);
         foreach (KeyValuePair<Token, Expression> keyValuePair in expression.arguments)
         {
             Define(keyValuePair.Key.Value, Evaluate(keyValuePair.Value));
@@ -153,7 +153,7 @@ public class Interpreter : IVisitorExpression, IVisitorDeclaration
         List<GameCard> test=((PackOfCards)Scope.GetValue("targets")).cards;
         foreach(GameCard gameCard in test)
         {
-            Debug.Log("target "+gameCard.name);
+            ActionText.Add_Action("Target "+gameCard.name);
         }
         foreach (Stmt stmt in calleer.body)
         {

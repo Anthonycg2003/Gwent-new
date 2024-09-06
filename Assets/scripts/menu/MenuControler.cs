@@ -19,7 +19,7 @@ public class MenuControler : MonoBehaviour
     [SerializeField]GameObject errorsDisplay;
     [SerializeField]GameObject CompletedDisplay;
     [SerializeField]GameObject DataCards;
-    readonly string path="C:/Users/John/Desktop/programacion/unity prueba/Gwent nuevo/Assets/Source/source.txt";
+    readonly string path=Application.dataPath+"/Source/source.txt";
     string text;
     bool IsReady;
     void Start()
